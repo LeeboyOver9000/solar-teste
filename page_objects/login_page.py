@@ -1,7 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as ec
+from selenium.webdriver.support import expected_conditions as EC
 
 
 class LoginPage:
@@ -17,7 +17,7 @@ class LoginPage:
 
     def deslogar(self):
         WebDriverWait(self.driver, timeout=5).until(
-            ec.element_to_be_clickable((By.ID, 'logout'))).click()
+            EC.element_to_be_clickable((By.ID, 'logout'))).click()
 
     def cadastrar(self, cpf: str):
         pass
