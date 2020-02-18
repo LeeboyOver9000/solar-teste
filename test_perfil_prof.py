@@ -2,8 +2,6 @@ import os
 import time
 import unittest
 
-from selenium import webdriver
-
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.options import Options
@@ -11,8 +9,8 @@ from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-from page_objects.login_page import LoginPage
 from driver_factory import DriverFactory
+from page_objects.login_page import LoginPage
 
 
 class AlunoTest(unittest.TestCase):
@@ -74,6 +72,7 @@ class AlunoTest(unittest.TestCase):
 
         response_text = self.browser.find_element_by_id(
             'flash_message_span').text
+
         self.assertEqual(response_text, 'Comentário criado com sucesso')
 
 
