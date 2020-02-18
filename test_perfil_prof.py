@@ -12,15 +12,13 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 from page_objects.login_page import LoginPage
+from driver_factory import DriverFactory
 
 
 class AlunoTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        # options = Options()
-        # options.headless = True
-        # cls.driver = webdriver.Chrome(options=options)
-        cls.driver = webdriver.Chrome()
+        cls.driver = DriverFactory.create_driver('chrome', visible=True)
         LoginPage(cls.driver).logar('prof', '123456')
 
     def setUp(self):
@@ -61,25 +59,22 @@ class AlunoTest(unittest.TestCase):
         time.sleep(1)
 
         iframe = self.browser.switch_to.active_element
-        # self.browser.switch_to.frame(iframe.id)
-
-        # iframe = self.browser.find_element_by_css_selector(
-        #     'iframe.cke_wysiwyg_frame')
-
-        # self.driver.find_element('testes').
-
-        print('AQUI!!! => IFRAME')
-        print(type(iframe))
-        print(iframe.id)
-        print(iframe.tag_name)
+        self.browser.switch_to.frame(iframe)
 
         ckeditor = self.browser.find_element_by_css_selector(
-            'body.cke_editable.cke_editable_themed')
+            '[contenteditable="true"]')
 
         ckeditor.clear()
-        ckeditor.send_keys('Teste')
+        ckeditor.send_keys('Testado pelo Selenium')
 
-        time.sleep(5)
+        self.browser.switch_to.parent_frame()
+        self.browser.find_element_by_class_name('save_comment').click()
+
+        time.sleep(1)
+
+        response_text = self.browser.find_element_by_id(
+            'flash_message_span').text
+        self.assertEqual(response_text, 'Comentário criado com sucesso')
 
 
 if __name__ == "__main__":
