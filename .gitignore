@@ -150,3 +150,6 @@ dmypy.json
 
 # Firefox webdriver log
 geckodriver.log
+
+# Media Files
+downloads/

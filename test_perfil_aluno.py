@@ -1,6 +1,7 @@
 import os
 import time
 import unittest
+from pathlib import Path
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -11,6 +12,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 from driver_factory import DriverFactory
 from page_objects.login_page import LoginPage
+from page_objects.mysolar_sidebar import MysolarSidebar
 
 
 class AlunoTest(unittest.TestCase):
@@ -22,17 +24,7 @@ class AlunoTest(unittest.TestCase):
     def setUp(self):
         self.browser = self.__class__.driver
         self.wait = WebDriverWait(self.browser, timeout=10)
-
-    def test_abrir_aulas(self):
-        self.wait.until(EC.element_to_be_clickable(
-            (By.CSS_SELECTOR, 'td.center.link'))).click()
-
-        self.wait.until(EC.element_to_be_clickable(
-            (By.LINK_TEXT, 'Aulas'))).click()
-
-        # TODO: Entrar nos participantes e criar o trabalho
-
-        time.sleep(5)
+        self.menu = MysolarSidebar(self.browser, self.wait)
 
     def tearDown(self):
         self.browser.get('http://localhost:3000/home')
@@ -40,6 +32,72 @@ class AlunoTest(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         cls.driver.quit()
+
+    def test_abrir_aulas(self):
+        self.menu.enter_menu('Aulas')
+
+        self.wait.until(EC.element_to_be_clickable(
+            (By.CSS_SELECTOR, 'a.link_content.lesson'))).click()
+
+        time.sleep(1)
+
+        fancybox = self.browser.find_element_by_class_name('fancybox-iframe')
+        self.browser.switch_to.frame(fancybox)
+
+        time.sleep(1)
+
+        self.wait.until(EC.visibility_of_element_located(
+            (By.ID, 'module-selected'))).click()
+
+        time.sleep(1)
+
+        self.wait.until(EC.visibility_of_element_located(
+            (By.ID, 'lmodule-options-dropdown'))).find_elements_by_tag_name('a')[-1].click()
+
+        time.sleep(1)
+
+        self.browser.switch_to.parent_frame()
+
+    def test_download_material_de_apoio_quando_nao_existe_arquivo(self):
+        self.menu.enter_menu('Material de Apoio')
+
+        filename = self.browser.find_element_by_css_selector(
+            '[headers="name_aulas"]').text
+
+        link = self.browser.find_element_by_css_selector(
+            '[headers="download_on_aulas"').find_element_by_tag_name('a')
+
+        link.click()
+        time.sleep(3)
+
+        download_path = f'{Path.home()}/Downloads/{filename}'
+        self.assertFalse(os.path.exists(download_path))
+
+    def test_download_material_de_apoio_quando_arquivo_existe(self):
+        self.menu.enter_menu('Material de Apoio')
+
+        filename = self.browser.find_element_by_css_selector(
+            '[headers="name_geral"]').text
+
+        link = self.browser.find_element_by_css_selector(
+            '[headers="download_on_geral"').find_element_by_tag_name('a')
+
+        link.click()
+        time.sleep(3)
+
+        download_path = f'{Path.home()}/Downloads/{filename}'
+        self.assertTrue(os.path.exists(download_path))
+
+    def test_download_material_de_apoio_link(self):
+        self.menu.enter_menu('Material de Apoio')
+
+        link = self.browser.find_element_by_css_selector(
+            '[headers="download_on_links"').find_element_by_tag_name('a')
+
+        link.click()
+        time.sleep(3)
+
+        # TODO: Verificar se é aberta nova aba, fechar a nova aba e voltar para o solar
 
 
 if __name__ == "__main__":
