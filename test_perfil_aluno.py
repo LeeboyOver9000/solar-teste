@@ -91,13 +91,24 @@ class AlunoTest(unittest.TestCase):
     def test_download_material_de_apoio_link(self):
         self.menu.enter_menu('Material de Apoio')
 
+        original_window = self.browser.current_window_handle
+
         link = self.browser.find_element_by_css_selector(
             '[headers="download_on_links"').find_element_by_tag_name('a')
 
         link.click()
         time.sleep(3)
 
-        # TODO: Verificar se é aberta nova aba, fechar a nova aba e voltar para o solar
+        self.wait.until(EC.number_of_windows_to_be(2))
+
+        time.sleep(1)
+
+        for window_handle in self.browser.window_handles:
+            if window_handle != original_window:
+                self.browser.switch_to.window(window_handle)
+                self.browser.close()
+
+        self.browser.switch_to.window(original_window)
 
 
 if __name__ == "__main__":
