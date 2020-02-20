@@ -13,6 +13,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from driver_factory import DriverFactory
 from page_objects.login_page import LoginPage
 from page_objects.mysolar_sidebar import MysolarSidebar
+from page_objects.forum import Forum
 
 
 class AlunoTest(unittest.TestCase):
@@ -25,6 +26,7 @@ class AlunoTest(unittest.TestCase):
         self.browser = self.__class__.driver
         self.wait = WebDriverWait(self.browser, timeout=10)
         self.menu = MysolarSidebar(self.browser, self.wait)
+        self.forum = Forum(self.browser, self.wait)
 
     def tearDown(self):
         self.browser.get('http://localhost:3000/home')
@@ -109,6 +111,30 @@ class AlunoTest(unittest.TestCase):
                 self.browser.close()
 
         self.browser.switch_to.window(original_window)
+
+    def test_cria_nova_postagem_no_forum(self):
+        self.menu.enter_menu('Fórum')
+
+        time.sleep(1)
+        self.forum.make_new_post()
+
+        time.sleep(1)
+        response_text = self.browser.find_element_by_id(
+            'flash_message_span').text
+
+        self.assertEqual(response_text, 'Postagem criada com sucesso')
+
+    def test_edita_postagem_do_forum(self):
+        self.menu.enter_menu('Fórum')
+
+        time.sleep(1)
+        self.forum.edit_first_post()
+
+        time.sleep(1)
+        response_text = self.browser.find_element_by_id(
+            'flash_message_span').text
+
+        self.assertEqual(response_text, 'Postagem atualizada com sucesso')
 
 
 if __name__ == "__main__":

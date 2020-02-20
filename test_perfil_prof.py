@@ -11,6 +11,8 @@ from selenium.webdriver.support import expected_conditions as EC
 
 from driver_factory import DriverFactory
 from page_objects.login_page import LoginPage
+from page_objects.mysolar_sidebar import MysolarSidebar
+from page_objects.ckeditor import Ckeditor
 
 
 class AlunoTest(unittest.TestCase):
@@ -22,6 +24,8 @@ class AlunoTest(unittest.TestCase):
     def setUp(self):
         self.browser = self.__class__.driver
         self.wait = WebDriverWait(self.browser, timeout=10)
+        self.menu = MysolarSidebar(self.browser, self.wait)
+        self.ckeditor = Ckeditor(self.browser, self.wait)
 
     def tearDown(self):
         self.browser.get('http://localhost:3000/home')
@@ -56,17 +60,7 @@ class AlunoTest(unittest.TestCase):
 
         time.sleep(1)
 
-        iframe = self.browser.switch_to.active_element
-        self.browser.switch_to.frame(iframe)
-
-        ckeditor = self.browser.find_element_by_css_selector(
-            '[contenteditable="true"]')
-
-        ckeditor.clear()
-        ckeditor.send_keys('Testado pelo Selenium')
-
-        self.browser.switch_to.parent_frame()
-        self.browser.find_element_by_class_name('save_comment').click()
+        self.ckeditor.post('.save_comment')
 
         time.sleep(1)
 
