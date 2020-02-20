@@ -114,7 +114,7 @@ class AlunoTest(unittest.TestCase):
         self.menu.enter_menu('Fórum')
 
         time.sleep(1)
-        self.forum.make_new_post()
+        self.forum.new_post()
 
         time.sleep(1)
         response_text = self.browser.find_element_by_id(
@@ -126,7 +126,7 @@ class AlunoTest(unittest.TestCase):
         self.menu.enter_menu('Fórum')
 
         time.sleep(1)
-        self.forum.edit_first_post()
+        self.forum.edit_post()
 
         time.sleep(1)
         response_text = self.browser.find_element_by_id(
@@ -138,7 +138,7 @@ class AlunoTest(unittest.TestCase):
         self.menu.enter_menu('Fórum')
 
         time.sleep(1)
-        self.forum.response_first_post()
+        self.forum.response_post()
 
         time.sleep(1)
         response_text = self.browser.find_element_by_id(

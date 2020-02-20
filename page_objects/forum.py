@@ -13,7 +13,7 @@ class Forum:
         self.wait = wait
         self.ckeditor = Ckeditor(self.driver, self.wait)
 
-    def make_new_post(self):
+    def new_post(self):
         self._enter_valid_forum()
 
         time.sleep(1)
@@ -24,7 +24,7 @@ class Forum:
         self.ckeditor.post(css_seletor='#submit_post',
                            message='Criado pelo Selenium')
 
-    def edit_first_post(self):
+    def edit_post(self):
         self._enter_valid_forum()
 
         time.sleep(1)
@@ -35,7 +35,7 @@ class Forum:
         self.ckeditor.post(css_seletor='#submit_post',
                            message='Editado pelo Selenium')
 
-    def response_first_post(self):
+    def response_post(self):
         self._enter_valid_forum()
 
         time.sleep(1)
