@@ -35,6 +35,17 @@ class Forum:
         self.ckeditor.post(css_seletor='#submit_post',
                            message='Editado pelo Selenium')
 
+    def response_first_post(self):
+        self._enter_valid_forum()
+
+        time.sleep(1)
+        self.wait.until(EC.element_to_be_clickable(
+            (By.CLASS_NAME, 'response_post'))).click()
+
+        time.sleep(1)
+        self.ckeditor.post(css_seletor='#submit_post',
+                           message='Respondido pelo Selenium')
+
     def _enter_valid_forum(self):
         table = self.wait.until(EC.visibility_of_element_located(
             (By.CSS_SELECTOR, 'table.discussions tbody')))

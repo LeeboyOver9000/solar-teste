@@ -66,11 +66,10 @@ class AlunoTest(unittest.TestCase):
         filename = self.browser.find_element_by_css_selector(
             '[headers="name_aulas"]').text
 
-        link = self.browser.find_element_by_css_selector(
-            '[headers="download_on_aulas"').find_element_by_tag_name('a')
+        self.browser.find_element_by_css_selector(
+            '[headers="download_on_aulas"').find_element_by_tag_name('a').click()
 
-        link.click()
-        time.sleep(3)
+        time.sleep(1)
 
         download_path = f'{Path.home()}/Downloads/{filename}'
         self.assertFalse(os.path.exists(download_path))
@@ -81,11 +80,10 @@ class AlunoTest(unittest.TestCase):
         filename = self.browser.find_element_by_css_selector(
             '[headers="name_geral"]').text
 
-        link = self.browser.find_element_by_css_selector(
-            '[headers="download_on_geral"').find_element_by_tag_name('a')
+        self.browser.find_element_by_css_selector(
+            '[headers="download_on_geral"').find_element_by_tag_name('a').click()
 
-        link.click()
-        time.sleep(3)
+        time.sleep(3)  # Espera 3 segundos para o download terminar
 
         download_path = f'{Path.home()}/Downloads/{filename}'
         self.assertTrue(os.path.exists(download_path))
@@ -135,6 +133,18 @@ class AlunoTest(unittest.TestCase):
             'flash_message_span').text
 
         self.assertEqual(response_text, 'Postagem atualizada com sucesso')
+
+    def test_responde_postagem_do_forum(self):
+        self.menu.enter_menu('Fórum')
+
+        time.sleep(1)
+        self.forum.response_first_post()
+
+        time.sleep(1)
+        response_text = self.browser.find_element_by_id(
+            'flash_message_span').text
+
+        self.assertEqual(response_text, 'Postagem criada com sucesso')
 
 
 if __name__ == "__main__":
