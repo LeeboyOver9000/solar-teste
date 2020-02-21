@@ -20,11 +20,12 @@ class AlunoTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.driver = DriverFactory.create_driver('chrome', visible=True)
-        LoginPage(cls.driver).logar('aluno1', '123456')
+        cls.wait = WebDriverWait(cls.driver, timeout=10)
+        LoginPage(cls.driver, cls.wait).logar('aluno1', '123456')
 
     def setUp(self):
         self.browser = self.__class__.driver
-        self.wait = WebDriverWait(self.browser, timeout=10)
+        self.wait = self.__class__.wait
         self.menu = MysolarSidebar(self.browser, self.wait)
         self.forum = Forum(self.browser, self.wait)
 
@@ -87,6 +88,19 @@ class AlunoTest(unittest.TestCase):
 
         download_path = f'{Path.home()}/Downloads/{filename}'
         self.assertTrue(os.path.exists(download_path))
+
+    # def test_download_de_zip_material_de_apoio_quando_arquivo_existe(self):
+    #     self.menu.enter_menu('Material de Apoio')
+
+    #     filename = self.browser.find_element_by_css_selector(
+    #         '[headers="name_geral"]').text
+
+    #     self.browser.find_element_by_css_selector(
+    #         '[headers="download_on_geral"').find_element_by_tag_name('a').click()
+
+    #     time.sleep(3)  # Espera 3 segundos para o download terminar
+
+    #     self.browser.get('chrome://downloads/')
 
     def test_download_material_de_apoio_link(self):
         self.menu.enter_menu('Material de Apoio')
