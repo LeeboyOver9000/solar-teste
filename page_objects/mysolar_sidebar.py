@@ -13,10 +13,8 @@ class MysolarSidebar:
     def enter_menu(self, menu_name: str):
         self.wait.until(EC.element_to_be_clickable(
             (By.CSS_SELECTOR, 'td.center.link'))).click()
-
         time.sleep(1)
 
         self.wait.until(EC.element_to_be_clickable(
             (By.LINK_TEXT, f'{menu_name}'))).click()
-
         time.sleep(1)
