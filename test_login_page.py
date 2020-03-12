@@ -44,15 +44,39 @@ class LoginPageTest(unittest.TestCase):
         self.assertEqual(
             response_text, 'Bem vindo! Sua conta foi criada com sucesso.')
 
-    def test_portal_navegacao_ufc(self):
+    def test_navegacao_ufc(self):
         portal_ufc = self.login_page.navegar(
             'Portais', 'Universidade Federal do Ceará')
         self.assertEqual(portal_ufc, 'http://www.ufc.br/')
 
-    def test_portal_navegacao_ufc_virtual(self):
+    def test_navegacao_ufc_virtual(self):
         portal_virtual = self.login_page.navegar(
             'Portais', 'Instituto UFC Virtual')
         self.assertEqual(portal_virtual, 'http://portal.virtual.ufc.br/')
+
+    def test_navegacao_licenca(self):
+        license_page = self.login_page.navegar(
+            'Desenvolvimento', 'Termos de licença')
+        self.assertEqual(
+            license_page, 'https://github.com/wwagner33/solar/blob/master/GPLv3')
+
+    def test_navegacao_equipe(self):
+        readme_page = self.login_page.navegar(
+            'Desenvolvimento', 'Equipe')
+        self.assertEqual(
+            readme_page, 'https://github.com/wwagner33/solar/blob/master/README')
+
+    def test_navegacao_code(self):
+        code_page = self.login_page.navegar(
+            'Desenvolvimento', 'Código')
+        self.assertEqual(
+            code_page, 'https://github.com/wwagner33/solar')
+
+    def test_navegacao_politica_privacidade(self):
+        privacy_policy_page = self.login_page.navegar(
+            'Política de privacidade')
+        self.assertEqual(
+            privacy_policy_page, 'http://localhost:3000/privacy_policy')
 
 
 if __name__ == "__main__":

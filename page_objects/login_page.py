@@ -24,14 +24,16 @@ class LoginPage:
         self.wait.until(EC.element_to_be_clickable((By.ID, 'logout'))).click()
         time.sleep(1)
 
-    def navegar(self, menu_name: str, link_name: str):
+    def navegar(self, menu_name: str, link_name: str = None):
         self.wait.until(EC.element_to_be_clickable(
             (By.LINK_TEXT, menu_name))).click()
 
-        time.sleep(1)
         original_window = self.driver.current_window_handle
-        self.wait.until(EC.element_to_be_clickable(
-            (By.LINK_TEXT, link_name))).click()
+
+        if link_name is not None:
+            time.sleep(1)
+            self.wait.until(EC.element_to_be_clickable(
+                (By.LINK_TEXT, link_name))).click()
 
         time.sleep(1)
         self.wait.until(EC.number_of_windows_to_be(2))
