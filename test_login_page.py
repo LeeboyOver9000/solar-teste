@@ -45,47 +45,13 @@ class LoginPageTest(unittest.TestCase):
             response_text, 'Bem vindo! Sua conta foi criada com sucesso.')
 
     def test_portal_navegacao_ufc(self):
-        self.wait.until(EC.element_to_be_clickable(
-            (By.LINK_TEXT, 'Portais'))).click()
-
-        time.sleep(1)
-        original_window = self.browser.current_window_handle
-        self.wait.until(EC.element_to_be_clickable(
-            (By.LINK_TEXT, 'Universidade Federal do Ceará'))).click()
-
-        time.sleep(1)
-        self.wait.until(EC.number_of_windows_to_be(2))
-
-        time.sleep(1)
-        for window_handle in self.browser.window_handles:
-            if window_handle != original_window:
-                self.browser.switch_to.window(window_handle)
-                portal_ufc = self.browser.current_url
-                self.browser.close()
-
-        self.browser.switch_to.window(original_window)
+        portal_ufc = self.login_page.navegar(
+            'Portais', 'Universidade Federal do Ceará')
         self.assertEqual(portal_ufc, 'http://www.ufc.br/')
 
     def test_portal_navegacao_ufc_virtual(self):
-        self.wait.until(EC.element_to_be_clickable(
-            (By.LINK_TEXT, 'Portais'))).click()
-
-        time.sleep(1)
-        original_window = self.browser.current_window_handle
-        self.wait.until(EC.element_to_be_clickable(
-            (By.LINK_TEXT, 'Instituto UFC Virtual'))).click()
-
-        time.sleep(1)
-        self.wait.until(EC.number_of_windows_to_be(2))
-
-        time.sleep(1)
-        for window_handle in self.browser.window_handles:
-            if window_handle != original_window:
-                self.browser.switch_to.window(window_handle)
-                portal_virtual = self.browser.current_url
-                self.browser.close()
-
-        self.browser.switch_to.window(original_window)
+        portal_virtual = self.login_page.navegar(
+            'Portais', 'Instituto UFC Virtual')
         self.assertEqual(portal_virtual, 'http://portal.virtual.ufc.br/')
 
 

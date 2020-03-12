@@ -24,8 +24,27 @@ class LoginPage:
         self.wait.until(EC.element_to_be_clickable((By.ID, 'logout'))).click()
         time.sleep(1)
 
-    def navegar(self):
-        pass
+    def navegar(self, menu_name: str, link_name: str):
+        self.wait.until(EC.element_to_be_clickable(
+            (By.LINK_TEXT, menu_name))).click()
+
+        time.sleep(1)
+        original_window = self.driver.current_window_handle
+        self.wait.until(EC.element_to_be_clickable(
+            (By.LINK_TEXT, link_name))).click()
+
+        time.sleep(1)
+        self.wait.until(EC.number_of_windows_to_be(2))
+
+        time.sleep(1)
+        for window_handle in self.driver.window_handles:
+            if window_handle != original_window:
+                self.driver.switch_to.window(window_handle)
+                site_open = self.driver.current_url
+                self.driver.close()
+
+        self.driver.switch_to.window(original_window)
+        return site_open
 
     def cadastrar(self, cpf: str):
         self.wait.until(EC.element_to_be_clickable(
