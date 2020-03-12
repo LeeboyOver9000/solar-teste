@@ -14,7 +14,7 @@ from page_objects.login_page import LoginPage
 class LoginPageTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.driver = DriverFactory.create_driver('chrome', visible=True)
+        cls.driver = DriverFactory.create_driver('chrome', visible=False)
         cls.wait = WebDriverWait(cls.driver, timeout=10)
 
     @classmethod
@@ -33,8 +33,24 @@ class LoginPageTest(unittest.TestCase):
 
     def test_faz_login_no_perfil_aluno(self):
         self.login_page.logar('aluno1', '123456')
-        title_home = self.browser.title.split()[-1]
-        self.assertEqual(title_home, 'Home')
+        time.sleep(1)
+        response_text = self.browser.find_element_by_id(
+            'flash_message_span').text
+        self.assertEqual(response_text, 'Login efetuado com sucesso.')
+
+    def test_faz_login_no_perfil_professor(self):
+        self.login_page.logar('prof', '123456')
+        time.sleep(1)
+        response_text = self.browser.find_element_by_id(
+            'flash_message_span').text
+        self.assertEqual(response_text, 'Login efetuado com sucesso.')
+
+    def test_faz_login_no_perfil_editor(self):
+        self.login_page.logar('editor', '123456')
+        time.sleep(1)
+        response_text = self.browser.find_element_by_id(
+            'flash_message_span').text
+        self.assertEqual(response_text, 'Login efetuado com sucesso.')
 
     def test_novo_cadastro_de_aluno(self):
         self.login_page.cadastrar(gen.cpf())
