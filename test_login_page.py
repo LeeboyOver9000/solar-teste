@@ -40,23 +40,26 @@ class LoginPageTest(unittest.TestCase):
 
     def test_faz_login_no_perfil_professor(self):
         self.login_page.logar('prof', '123456')
-        time.sleep(1)
-        response_text = self.browser.find_element_by_id(
-            'flash_message_span').text
+        response_text = self.wait.until(
+            EC.visibility_of_element_located((By.ID, 'flash_message_span'))).text
         self.assertEqual(response_text, 'Login efetuado com sucesso.')
 
     def test_faz_login_no_perfil_editor(self):
         self.login_page.logar('editor', '123456')
-        time.sleep(1)
-        response_text = self.browser.find_element_by_id(
-            'flash_message_span').text
+        response_text = self.wait.until(
+            EC.visibility_of_element_located((By.ID, 'flash_message_span'))).text
+        self.assertEqual(response_text, 'Login efetuado com sucesso.')
+
+    def test_faz_login_no_perfil_admin(self):
+        self.login_page.logar('admin', '123456')
+        response_text = self.wait.until(
+            EC.visibility_of_element_located((By.ID, 'flash_message_span'))).text
         self.assertEqual(response_text, 'Login efetuado com sucesso.')
 
     def test_novo_cadastro_de_aluno(self):
         self.login_page.cadastrar(gen.cpf())
-        time.sleep(1)
-        response_text = self.browser.find_element_by_id(
-            'flash_message_span').text
+        response_text = self.wait.until(
+            EC.visibility_of_element_located((By.ID, 'flash_message_span'))).text
         self.assertEqual(
             response_text, 'Bem vindo! Sua conta foi criada com sucesso.')
 
