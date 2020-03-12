@@ -78,6 +78,43 @@ class LoginPageTest(unittest.TestCase):
         self.assertEqual(
             privacy_policy_page, 'http://localhost:3000/privacy_policy')
 
+    def test_navegacao_app(self):
+        self.wait.until(EC.element_to_be_clickable(
+            (By.CSS_SELECTOR, 'a[href="/apps"]'))).click()
+
+        time.sleep(1)
+        app_page = self.browser.current_url
+        self.assertEqual(app_page, 'http://localhost:3000/apps')
+        self.browser.back()
+
+    def test_navegacao_tutorials(self):
+        self.wait.until(EC.element_to_be_clickable(
+            (By.LINK_TEXT, 'Ajuda'))).click()
+
+        time.sleep(1)
+        self.wait.until(EC.element_to_be_clickable(
+            (By.LINK_TEXT, 'Tutoriais'))).click()
+
+        url = self.browser.current_url
+        self.assertEqual(url, 'http://localhost:3000/tutorials_login')
+        self.browser.back()
+
+    def test_navegacao_videos_tutoriais(self):
+        url = self.login_page.navegar('Ajuda', 'Vídeos tutoriais')
+        self.assertEqual(url, 'http://localhost:3000/video_tutorials.html')
+
+    def test_navegacao_faq(self):
+        self.wait.until(EC.element_to_be_clickable(
+            (By.LINK_TEXT, 'Ajuda'))).click()
+
+        time.sleep(1)
+        self.wait.until(EC.element_to_be_clickable(
+            (By.LINK_TEXT, 'FAQ'))).click()
+
+        url = self.browser.current_url
+        self.assertEqual(url, 'http://localhost:3000/faq')
+        self.browser.back()
+
 
 if __name__ == "__main__":
     unittest.main()

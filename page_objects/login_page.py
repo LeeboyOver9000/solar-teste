@@ -1,3 +1,4 @@
+import re
 import time
 
 from faker import Faker
@@ -67,7 +68,7 @@ class LoginPage:
             'user_nick').send_keys(fake.first_name())
         username = '_'.join(fake.last_name().split())
         self.driver.find_element_by_id(
-            'user_username').send_keys(f'Selenium_{username}')
+            'user_username').send_keys(f'Selenium_{self._remove_acentos(username)}')
         self.driver.find_element_by_id(
             'user_password').send_keys('123456')
         self.driver.find_element_by_id(
@@ -86,3 +87,19 @@ class LoginPage:
 
         time.sleep(1)
         self.driver.find_element_by_id('complete').click()
+
+    def _remove_acentos(self, nome: str) -> str:
+        nome = re.sub('[áàâãä]', 'a', nome)
+        nome = re.sub('[ÁÀÂÃÄ]', 'A', nome)
+        nome = re.sub('[éèê]', 'e', nome)
+        nome = re.sub('[ÉÈÊ]', 'E', nome)
+        nome = re.sub('[ÉÈÊ]', 'E', nome)
+        nome = re.sub('[íì]', 'i', nome)
+        nome = re.sub('[ÍÌ]', 'I', nome)
+        nome = re.sub('[óòôõö]', 'o', nome)
+        nome = re.sub('[ÓÒÔÕÖ]', 'O', nome)
+        nome = re.sub('[úùü]', 'u', nome)
+        nome = re.sub('[ÚÙÜ]', 'U', nome)
+        nome = re.sub('ç', 'c', nome)
+        nome = re.sub('Ç', 'c', nome)
+        return nome
