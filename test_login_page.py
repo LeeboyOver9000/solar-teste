@@ -58,6 +58,7 @@ class LoginPageTest(unittest.TestCase):
 
     def test_novo_cadastro_de_aluno(self):
         self.login_page.cadastrar(gen.cpf())
+        time.sleep(3)
         response_text = self.wait.until(
             EC.visibility_of_element_located((By.ID, 'flash_message_span'))).text
         self.assertEqual(

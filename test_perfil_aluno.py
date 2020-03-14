@@ -43,22 +43,18 @@ class AlunoTest(unittest.TestCase):
             (By.CSS_SELECTOR, 'a.link_content.lesson'))).click()
 
         time.sleep(1)
-
         fancybox = self.browser.find_element_by_class_name('fancybox-iframe')
         self.browser.switch_to.frame(fancybox)
 
         time.sleep(1)
-
         self.wait.until(EC.visibility_of_element_located(
             (By.ID, 'module-selected'))).click()
 
         time.sleep(1)
-
         self.wait.until(EC.visibility_of_element_located(
             (By.ID, 'lmodule-options-dropdown'))).find_elements_by_tag_name('a')[-1].click()
 
         time.sleep(1)
-
         self.browser.switch_to.parent_frame()
 
     def test_download_material_de_apoio_quando_nao_existe_arquivo(self):
@@ -71,7 +67,6 @@ class AlunoTest(unittest.TestCase):
             '[headers="download_on_aulas"').find_element_by_tag_name('a').click()
 
         time.sleep(1)
-
         download_path = f'{Path.home()}/Downloads/{filename}'
         self.assertFalse(os.path.exists(download_path))
 

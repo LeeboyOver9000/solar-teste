@@ -43,11 +43,11 @@ class LoginPage:
         for window_handle in self.driver.window_handles:
             if window_handle != original_window:
                 self.driver.switch_to.window(window_handle)
-                site_open = self.driver.current_url
+                url = self.driver.current_url
                 self.driver.close()
 
         self.driver.switch_to.window(original_window)
-        return site_open
+        return url
 
     def cadastrar(self, cpf: str):
         self.wait.until(EC.element_to_be_clickable(
@@ -58,7 +58,8 @@ class LoginPage:
         self.driver.find_element_by_id('submit-cpf').click()
 
         time.sleep(1)
-        fake = Faker('pt_BR')
+        # fake = Faker('pt_BR')
+        fake = Faker()
 
         self.driver.find_element_by_id('user_name').send_keys(fake.name())
         self.driver.find_element_by_id('next_1').click()
@@ -67,8 +68,10 @@ class LoginPage:
         self.driver.find_element_by_id(
             'user_nick').send_keys(fake.first_name())
         username = '_'.join(fake.last_name().split())
+        # self.driver.find_element_by_id(
+        #     'user_username').send_keys(f'Selenium_{self._remove_acentos(username)}')
         self.driver.find_element_by_id(
-            'user_username').send_keys(f'Selenium_{self._remove_acentos(username)}')
+            'user_username').send_keys(f'Selenium_{username}')
         self.driver.find_element_by_id(
             'user_password').send_keys('123456')
         self.driver.find_element_by_id(
